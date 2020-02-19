@@ -53,7 +53,7 @@
 
 #include "attiny_firmware.h"
 
-enum { QWERTY, NUMPAD, _LAYER_MAX }; // layers
+enum { QWERTY, SYMBOL, NUMPAD, FUNCTION, _LAYER_MAX }; // layers
 
 /* This comment temporarily turns off astyle's indent enforcement so we can make
  * the keymaps actually resemble the physical key layout better
@@ -63,36 +63,70 @@ enum { QWERTY, NUMPAD, _LAYER_MAX }; // layers
 KEYMAPS(
 [QWERTY] = KEYMAP_STACKED
 (
-    Key_Escape      ,Key_1         ,Key_2       ,Key_3         ,Key_4     ,Key_5 ,Key_6
-   ,Key_Tab         ,Key_Q         ,Key_W       ,Key_E         ,Key_R     ,Key_T
-   ,Key_CapsLock    ,Key_A         ,Key_S       ,Key_D         ,Key_F     ,Key_G
-   ,Key_LeftShift   ,Key_Backslash ,Key_Z       ,Key_X         ,Key_C     ,Key_V ,Key_B
-   ,Key_LeftControl ,Key_LeftGui   ,Key_LeftAlt ,Key_Space     ,Key_Space
-                                                ,Key_Backspace ,Key_Enter
+    Key_Backtick    ,Key_1         ,Key_2       ,Key_3                ,Key_4     ,Key_5 ,Key_6
+   ,Key_Tab         ,Key_Q         ,Key_W       ,Key_E                ,Key_R     ,Key_T
+   ,Key_Escape      ,Key_A         ,Key_S       ,Key_D                ,Key_F     ,Key_G
+   ,Key_LeftShift   ,Key_Backslash ,Key_Z       ,Key_X                ,Key_C     ,Key_V ,Key_B
+   ,Key_LeftControl ,Key_LeftGui   ,Key_LeftAlt ,Key_LeftAlt          ,Key_LeftControl
+                                                ,ShiftToLayer(NUMPAD) ,ShiftToLayer(SYMBOL)
 
-   ,Key_7               ,Key_8      ,Key_9        ,Key_0        ,Key_Minus         ,Key_Equals       ,Key_Backspace
-   ,Key_Y               ,Key_U      ,Key_I        ,Key_O        ,Key_P             ,Key_LeftBracket  ,Key_RightBracket ,Key_Enter
-   ,Key_H               ,Key_J      ,Key_K        ,Key_L        ,Key_Semicolon     ,Key_Quote        ,Key_Backslash
-   ,Key_N               ,Key_M      ,Key_Comma    ,Key_Period   ,Key_Slash         ,Key_RightShift
-   ,Key_Space           ,Key_Space  ,Key_RightAlt ,Key_RightGui ,Key_LEDEffectNext ,Key_RightControl
-   ,MoveToLayer(NUMPAD) ,Key_Delete
+   ,Key_7               ,Key_8           ,Key_9        ,Key_0        ,Key_Minus         ,Key_Equals       ,Key_Backspace
+   ,Key_Y               ,Key_U           ,Key_I        ,Key_O        ,Key_P             ,Key_LeftBracket  ,Key_RightBracket ,Key_Enter
+   ,Key_H               ,Key_J           ,Key_K        ,Key_L        ,Key_Semicolon     ,Key_Quote        ,Key_Backslash
+   ,Key_N               ,Key_M           ,Key_Comma    ,Key_Period   ,Key_Slash         ,Key_RightShift
+   ,Key_Space           ,Key_RightShift  ,Key_RightAlt ,Key_RightGui ,Key_LEDEffectNext ,Key_RightControl
+   ,Key_Backspace       ,Key_Delete
+),
+
+[SYMBOL] = KEYMAP_STACKED
+(
+    Key_Escape      ,Key_F1            ,Key_F2             ,Key_F3                   ,Key_F4 ,Key_F5 ,Key_F6
+   ,Key_Tab         ,Key_LeftBracket   ,Key_RightBracket   ,LSHIFT(Key_LeftBracket)  ,LSHIFT(Key_RightBracket)    ,XXX
+   ,Key_Escape      ,LSHIFT(Key_Comma) ,LSHIFT(Key_Period) ,LSHIFT(Key_9)            ,LSHIFT(Key_0)               ,XXX
+   ,Key_LeftShift   ,Key_Backslash     ,XXX                ,XXX                      ,LSHIFT(Key_Backtick)        ,LSHIFT(Key_4)    ,XXX
+   ,Key_LeftControl ,Key_LeftGui       ,Key_LeftAlt        ,Key_Space                ,Key_Space
+                                                           ,Key_Backspace            ,Key_Enter
+
+   ,Key_F7                 ,Key_F8              ,Key_F9                  ,Key_F10                 ,Key_F11            ,Key_F12         ,Key_Backspace
+   ,LSHIFT(Key_1)          ,LSHIFT(Key_Equals)  ,LSHIFT(Key_3)           ,LSHIFT(Key_Backslash)   ,LSHIFT(Key_5)      ,XXX             ,XXX            ,Key_Enter
+   ,Key_Backslash          ,LSHIFT(Key_Minus)   ,LSHIFT(Key_8)           ,Key_Minus               ,Key_Equals         ,Key_Backtick    ,Key_Backslash
+   ,LSHIFT(Key_6)          ,Key_Slash           ,LSHIFT(Key_Semicolon)   ,LSHIFT(Key_7)           ,LSHIFT(Key_Slash)  ,LSHIFT(Key_2)
+   ,ShiftToLayer(FUNCTION) ,Key_Space           ,Key_LeftArrow           ,Key_DownArrow           ,Key_RightArrow     ,Key_RightControl
+   ,ShiftToLayer(NUMPAD)   ,Key_Delete
 ),
 
 [NUMPAD] = KEYMAP_STACKED
 (
     Key_Escape      ,Key_F1        ,Key_F2        ,Key_F3         ,Key_F4 ,Key_F5 ,Key_F6
-   ,Key_Tab         ,XXX           ,Key_UpArrow   ,XXX            ,XXX    ,XXX
-   ,Key_CapsLock    ,Key_LeftArrow ,Key_DownArrow ,Key_RightArrow ,XXX    ,XXX
+   ,Key_Tab         ,XXX           ,Key_UpArrow   ,Key_UpArrow    ,XXX    ,XXX
+   ,Key_Escape      ,Key_LeftArrow ,Key_LeftArrow ,Key_DownArrow  ,Key_RightArrow ,XXX
    ,Key_LeftShift   ,Key_Backslash ,XXX           ,XXX            ,XXX    ,XXX    ,XXX
    ,Key_LeftControl ,Key_LeftGui   ,Key_LeftAlt   ,Key_Space      ,Key_Space
                                                   ,Key_Backspace  ,Key_Enter
 
    ,Key_F7              ,Key_F8    ,Key_F9        ,Key_F10       ,Key_F11            ,Key_F12 ,Key_Backspace
    ,Key_KeypadSubtract  ,Key_7     ,Key_8         ,Key_9         ,Key_KeypadDivide   ,XXX     ,XXX, Key_Enter
-   ,Key_KeypadAdd       ,Key_4     ,Key_5         ,Key_6         ,Key_KeypadMultiply ,XXX     ,Key_Backslash
-   ,Key_KeypadDot       ,Key_1     ,Key_2         ,Key_3         ,Key_UpArrow        ,Key_RightShift
-   ,Key_0               ,Key_Space ,Key_LeftArrow ,Key_DownArrow ,Key_RightArrow     ,Key_RightControl
-   ,MoveToLayer(QWERTY) ,Key_Delete
+   ,Key_Comma           ,Key_4     ,Key_5         ,Key_6         ,Key_KeypadMultiply ,XXX     ,Key_Backslash
+   ,Key_Period          ,Key_1     ,Key_2         ,Key_3         ,Key_0              ,Key_RightShift
+   ,Key_0               ,Key_Space ,Key_0         ,Key_DownArrow ,Key_RightArrow     ,Key_RightControl
+   ,Key_Space           ,Key_Delete
+),
+
+[FUNCTION] = KEYMAP_STACKED
+(
+    Key_Escape      ,Key_F1        ,Key_F2        ,Key_F3         ,Key_F4 ,Key_F5 ,Key_F6
+   ,Key_Tab         ,XXX           ,Key_UpArrow   ,Key_UpArrow    ,XXX    ,XXX
+   ,Key_Escape      ,Key_LeftArrow ,Key_LeftArrow ,Key_DownArrow  ,Key_RightArrow ,XXX
+   ,Key_LeftShift   ,Key_Backslash ,XXX           ,XXX            ,XXX    ,XXX    ,XXX
+   ,Key_LeftControl ,Key_LeftGui   ,Key_LeftAlt   ,Key_Space      ,Key_Space
+                                                  ,Key_Backspace  ,Key_Enter
+
+   ,Key_F7              ,Key_F8    ,Key_F9        ,Key_F10       ,Key_F11            ,Key_F12 ,Key_Backspace
+   ,Key_KeypadSubtract  ,Key_F7    ,Key_F8        ,Key_F9        ,Key_KeypadDivide   ,XXX     ,XXX, Key_Enter
+   ,Key_Comma           ,Key_F4    ,Key_F5        ,Key_F6        ,Key_KeypadMultiply ,XXX     ,Key_Backslash
+   ,Key_Period          ,Key_F1    ,Key_F2        ,Key_F3        ,Key_0              ,Key_RightShift
+   ,Key_0               ,Key_Space ,Key_0         ,Key_DownArrow ,Key_RightArrow     ,Key_RightControl
+   ,Key_Space           ,Key_Delete
  )
 );
 
